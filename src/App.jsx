@@ -17,9 +17,9 @@ function App() {
     const mongoClient = stitchClient.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas');
     const db = mongoClient.db('foo');
     const coll = db.collection('bar')
-    coll.find({}, {limit: 10})
-      .toArray()
-      .then(results => console.log('Results:', results));
+    //coll.find({}, {limit: 10})
+    //.toArray()
+    //.then(results => console.log('Results:', results));
   }, []);
 
   return (

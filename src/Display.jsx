@@ -1,28 +1,56 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3'
+import generateRepelGroups from './repelGroups'
 
 export function Display() {
     const container = useRef(null);
 
     useEffect(() => {
         if (container.current) {
-            const svg = d3.select(container.current);
-            const update = svg.append("g").selectAll("text").data("hello world");
-            update.enter()
-                .append('text')
-                .attr('x', (d, i) => i * 25)
-                .attr('y', 40)
-                .style('font-size', 24)
-                .text((d) => d);
+          const data = {
+            groups: [
+              {
+                name: 'shard1',
+                processes: [
+                  {
+                    name: 'primary',
+                  }
+                ]
+              },
+              {
+                name: 'config',
+                processes: [
+                  {
+                    name: 'primary',
+                  }
+                ]
+              },
+              {
+                name: 'mongos1',
+                processes: [
+                  {
+                    name: 'mongos',
+                    services: [
+                      {
+                        name: 'CatalogCache',
+                      },
+                      {
+                        name: 'AsyncRequestsSender'
+                      }
+                    ]
+                  }
+                ]
+              },
+            ],
+          };
 
-            update.text((d: number) => d);
+          const repelGroups = generateRepelGroups();
+          d3.select(container.current).data([data]).call(repelGroups);
         }
     }, [])
 
     return (
         <svg
-            width={400}
-            height={200}
             ref={container}
         />
     )
