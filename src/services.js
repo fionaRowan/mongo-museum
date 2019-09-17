@@ -21,7 +21,7 @@ export default function generateServices() {
 
       enterServiceGroups.append('circle')
         .attr('r', 25)
-        .attr('stroke', 'black')
+        .attr('stroke', 'white')
         .attr('cx', (d, i) => 26 + 49 * i)
         .attr('cy', (d, i) => 26 + 49 * i)
         .attr('fill', 'none')

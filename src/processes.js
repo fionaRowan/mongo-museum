@@ -15,12 +15,11 @@ export default function generateProcesses() {
         .append('g')
         .attr('class', 'process');
 
-      enterProcessGroups.append('rect')
-        .attr('height', 100)
-        .attr('width', 100)
-        .attr('stroke', 'black')
-        .attr('x', 1)
-        .attr('y', 1)
+      enterProcessGroups.append('circle')
+        .attr('r', 50)
+        .attr('stroke', 'white')
+        .attr('cx', 50)
+        .attr('cy', 50)
         .attr('fill', 'none')
         .attr('stroke-width', 1);
 
