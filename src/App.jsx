@@ -1,11 +1,12 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect, useState }  from 'react';
 import './App.css';
 import { Stitch, AnonymousCredential, RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
 import { createStore } from 'redux';
 import Display from './Display';
+import MongoMuseum from './reducers/reducers';
 
 function App() {
-  let store;
+  const [store, setStore] = useState(0);
   useEffect(() => { // initialize stitch client
     const stitchClient = Stitch.initializeDefaultAppClient('mongomuseum-mbuqp');
     console.log("logging in anonymously");
@@ -15,11 +16,11 @@ function App() {
       console.log(err);
     });
     const mongoClient = stitchClient.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas');
-    const db = mongoClient.db('foo');
-    const coll = db.collection('bar')
-    //coll.find({}, {limit: 10})
-    //.toArray()
-    //.then(results => console.log('Results:', results));
+    const db = mongoClient.db('fts');
+    const coll = db.collection('stories')
+    coll.find({}, {limit: 10})
+    .toArray()
+    .then(results => setStore(createStore(MongoMuseum, results)));
   }, []);
 
   return (
@@ -28,7 +29,7 @@ function App() {
         <p>
           Night at the Cluster Museum
         </p>
-        <Display/>
+        <Display store={store}/>
       </header>
     </div>
   );

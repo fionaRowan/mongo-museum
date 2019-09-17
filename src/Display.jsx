@@ -2,7 +2,11 @@ import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3'
 import generateRepelGroups from './repelGroups'
 
-export function Display() {
+const Display = (props) => {
+
+    if (props.store) {
+      console.log(props.store.getState());
+    }
     const container = useRef(null);
 
     useEffect(() => {
