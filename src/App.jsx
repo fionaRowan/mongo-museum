@@ -23,8 +23,17 @@ function App() {
     const coll = db.collection('stories');
     coll.find({}, {limit: 10})
     .toArray()
-    .then(results => setData(results[0]));
+    .then(results => {
+      setData(results[0]);
+
+    });
   }, []);
+
+  useEffect(() => {
+    if (childRef && childRef.current && data) {
+      d3.select(childRef.current).data([data]).call(repelGroups);
+    }
+  }, [childRef, data])
 
   return (
     <div className="App">
