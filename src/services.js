@@ -43,7 +43,7 @@ export default function generateServices() {
 
       enterServiceGroups
         .append('text')
-        .text(d => d.name)
+        .text(d => d.label || d.name)
         .attr('fill', 'lightgrey')
         .attr('text-anchor', 'middle')
         .attr('font-size', fontSize)

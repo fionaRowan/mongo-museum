@@ -3,9 +3,8 @@ import generateProcesses from './processes';
 import generateForceSimulation from './forceSimulation';
 
 export default function generateRepelGroups() {
-  let height = 500;
-  let width = 500;
-  let padding = 50;
+  let height = 1000;
+  let width = 1000;
   let fontSize = 26;
   let strokeWidth = 1;
 
@@ -49,7 +48,7 @@ export default function generateRepelGroups() {
 
       groupsEnter
         .append('text')
-        .text(d => d.name)
+        .text(d => d.label || d.name)
         .attr('fill', 'grey')
         .attr('font-size', fontSize)
         .attr('text-anchor', 'middle')
