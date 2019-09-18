@@ -39,7 +39,12 @@ export default function generateServices() {
         .attr('r', circleRadius)
         .attr('stroke', 'white')
         .attr('fill', 'none')
-        .attr('stroke-width', strokeWidth);
+        .attr('stroke-width', strokeWidth)
+        .on('mouseover', () => { d3.select(this).style("cursor", "pointer"); })
+        .on('mouseout', () => { d3.select(this).style("cursor", "default"); })
+        .on('click', (d) => {
+          window.open(d.github, "_blank");
+        })
 
       enterServiceGroups
         .append('text')
