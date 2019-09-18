@@ -12,7 +12,7 @@ const Display = (props) => {
             d3.select(container.current).data([props.data]).call(repelGroups);
           }
         }
-    }, [props.data])
+    })
 
     return (
         <svg

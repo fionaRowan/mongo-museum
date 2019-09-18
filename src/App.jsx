@@ -42,7 +42,6 @@ function App() {
 
 
 function swapNode(tree, step) {
-  console.log("swapnode");
   for (let deltaIdx in step.deltas) {
     let delta = step.deltas[deltaIdx];
     for (let groupIdx in tree.groups) {
