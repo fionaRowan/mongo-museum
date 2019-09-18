@@ -24,7 +24,8 @@ export default function generateServices() {
         .attr('stroke', 'white')
         .attr('cx', (d, i) => 26 + 49 * i)
         .attr('cy', (d, i) => 26 + 49 * i)
-        .attr('fill', 'none')
+        .attr('fill', (d) => {return d.highlight ? "yellow" : "none"})
+        .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'})
         .attr('stroke-width', 1);
 
       serviceGroups = serviceGroups.merge(enterServiceGroups);

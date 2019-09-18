@@ -22,6 +22,7 @@ export default function generateProcesses() {
         .attr('cx', 50)
         .attr('cy', 50)
         .attr('fill', (d) => {return d.highlight ? 'green' : 'none'})
+        .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'})
         .attr('stroke-width', 1);
 
       processGroups = processGroups.merge(enterProcessGroups);
