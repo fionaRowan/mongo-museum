@@ -33,18 +33,18 @@ export default function generateServices() {
 
       const enterServiceGroups = serviceGroups.enter()
         .append('g')
-        .attr('class', className);
-
-      enterServiceGroups.append('circle')
-        .attr('r', circleRadius)
-        .attr('stroke', 'white')
-        .attr('fill', 'none')
-        .attr('stroke-width', strokeWidth)
+        .attr('class', className)
         .on('mouseover', () => { d3.select(this).style("cursor", "pointer"); })
         .on('mouseout', () => { d3.select(this).style("cursor", "default"); })
         .on('click', (d) => {
           window.open(d.github, "_blank");
-        })
+        });
+
+      enterServiceGroups.append('circle')
+        .attr('r', circleRadius)
+        .attr('stroke', 'white')
+        .attr('fill', 'transparent')
+        .attr('stroke-width', strokeWidth)
 
       enterServiceGroups
         .append('text')
@@ -58,7 +58,7 @@ export default function generateServices() {
 
       serviceGroups.selectAll('circle')
         .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'})
-        .attr('fill', (d) => d.highlight || 'none');
+        .attr('fill', (d) => (d.highlight && d.highlight !== "None") ? d.highlight : "transparent");
 
       serviceGroups.selectAll('text')
         .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'});
