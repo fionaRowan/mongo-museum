@@ -50,6 +50,9 @@ function App() {
           const newData = swapNode(data, data.steps[stepNumber+1]);
           console.log(newData);
           setData(newData);
+          if (childRef.current) {
+            d3.select(childRef.current).data([newData]).call(repelGroups);
+          }
         }} disabled={data && stepNumber === data.steps.length - 1}>Next</button>
         <p>{data && stepNumber >= 0 ? data.steps[stepNumber].description : 'Click Next to Start Story'}</p>
       </header>
