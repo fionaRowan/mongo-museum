@@ -6,11 +6,12 @@ import Display from './Display';
 import * as d3 from 'd3'
 import generateRepelGroups from './repelGroups'
 
+const repelGroups = generateRepelGroups();
+
 function App() {
   const [data, setData] = useState(0);
   const [stepNumber, setStepNumber] = useState(-1);
   const [childRef, setChildRef] = useState(null);
-  const repelGroups = generateRepelGroups();
   useEffect(() => { // initialize stitch client
     const stitchClient = Stitch.initializeDefaultAppClient('mongomuseum-mbuqp');
     console.log("logging in anonymously");

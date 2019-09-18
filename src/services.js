@@ -6,8 +6,11 @@ export default function generateServices() {
   let parentRadius = 10;
   let strokeWidth = 1;
   let fontSize = 10;
+  let forceSimulations = [];
+  let childService = [];
+
   function services(selection) {
-    selection.each(function(data) {
+    selection.each(function(data, datai) {
       const parent = d3.select(this);
       const className = `service-of-${data.name}`;
       const numServices = data.services && data.services.length;
@@ -18,16 +21,32 @@ export default function generateServices() {
         return;
       }
 
-      const forceSimulation = generateForceSimulation({
-        n: numServices,
-        cx: 0,
-        cy: 0,
-        itemRadius: serviceRadius,
-        boundingRadius: parentRadius,
-      });
+      if (!childService[datai]) {
+        childService[datai] = generateServices();
+      }
 
       let serviceGroups = parent.selectAll(`g.${className}`)
-        .data(data.services);
+        .data(data.services, d => d.name);
+
+      if (!forceSimulations[datai] || serviceGroups.enter().size() > 0 || serviceGroups.exit().size() > 0) {
+        forceSimulations[datai] = generateForceSimulation({
+          n: numServices,
+          cx: 0,
+          cy: 0,
+          itemRadius: serviceRadius,
+          boundingRadius: parentRadius,
+        });
+
+        forceSimulations[datai].on('tick', () => {
+          serviceGroups
+            .attr('transform', (d, i) => {
+              const node = forceSimulations[datai].nodes()[i];
+              if (!node) return;
+              return `translate(${node.x}, ${node.y})`;
+            })
+        });
+      }
+
 
       serviceGroups.exit().remove();
 
@@ -63,18 +82,8 @@ export default function generateServices() {
       serviceGroups.selectAll('text')
         .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'});
 
-      forceSimulation.on('tick', () => {
-        serviceGroups
-          .attr('transform', (d, i) => {
-            const node = forceSimulation.nodes()[i];
-            return `translate(${node.x}, ${node.y})`;
-          })
-      });
-
-
-      const childService = generateServices()
-        .radius(circleRadius);
-      serviceGroups.call(childService);
+      childService[datai].radius(circleRadius);
+      serviceGroups.call(childService[datai]);
     });
   }
 
