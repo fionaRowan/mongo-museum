@@ -12,7 +12,7 @@ export default function generateServices() {
       const className = `service-of-${data.name}`;
       const numServices = data.services && data.services.length;
       const serviceRadius = circleRadii[numServices] * parentRadius;
-      const circleRadius = serviceRadius - strokeWidth - fontSize;
+      const circleRadius = Math.max(serviceRadius - strokeWidth - fontSize, 1);
 
       if (!numServices) {
         return;
@@ -58,7 +58,7 @@ export default function generateServices() {
 
       serviceGroups.selectAll('circle')
         .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'})
-        .attr('fill', (d) => {return d.highlight ? "yellow" : "none"});
+        .attr('fill', (d) => d.highlight || 'none');
 
       serviceGroups.selectAll('text')
         .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'});

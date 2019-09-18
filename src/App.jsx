@@ -7,7 +7,7 @@ import generateRepelGroups from './repelGroups'
 
 function App() {
   const [data, setData] = useState(0);
-  const [stepNumber, setStepNumber] = useState(0);
+  const [stepNumber, setStepNumber] = useState(-1);
   const [childRef, setChildRef] = useState(null);
   const repelGroups = generateRepelGroups();
   useEffect(() => { // initialize stitch client
@@ -43,14 +43,15 @@ function App() {
         </p>
         <Display setChildRef={setChildRef} data={data} />
         <button onClick={() => {
-        setStepNumber(stepNumber+1)
-        const newData = swapNode(data, data.steps[stepNumber+1]);
-        console.log(newData);
-        setData(newData);
-        if (childRef.current) {
-          d3.select(childRef.current).data([newData]).call(repelGroups);
-        }
-        }}>Next</button>
+          if (!data || stepNumber >= data.steps.length - 1) {
+            return;
+          }
+          setStepNumber(stepNumber+1)
+          const newData = swapNode(data, data.steps[stepNumber+1]);
+          console.log(newData);
+          setData(newData);
+        }} disabled={data && stepNumber === data.steps.length - 1}>Next</button>
+        <p>{data && stepNumber >= 0 ? data.steps[stepNumber].description : 'Click Next to Start Story'}</p>
       </header>
     </div>
   );

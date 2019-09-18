@@ -3,10 +3,11 @@ import generateProcesses from './processes';
 import generateForceSimulation from './forceSimulation';
 
 export default function generateRepelGroups() {
-  let height = 1000;
-  let width = 1000;
+  let height = 800;
+  let width = 800;
   let fontSize = 26;
   let strokeWidth = 1;
+  let forceSimulation;
 
   function repelGroups(selection) {
     selection.each(function(data) {
@@ -15,22 +16,24 @@ export default function generateRepelGroups() {
       const cx = width / 2;
       const cy = height / 2;
       const r = Math.min(height, width) / (Math.ceil(Math.sqrt(groupData.length)) * 2);
-      const circleRadius = r - strokeWidth - fontSize;
-
-      const forceSimulation = generateForceSimulation({
-        n: groupData.length,
-        cx,
-        cy,
-        itemRadius: r,
-        boundingHeight: height,
-        boundingWidth: width,
-      });
+      const circleRadius = Math.max(r - strokeWidth - fontSize, 1);
 
       svg.attr('height', height)
         .attr('width', width);
 
       let groups = svg.selectAll('g.repel-group')
         .data(groupData);
+
+      if (!forceSimulation || groups.enter().size() > 0 || groups.exit().size() > 0) {
+        forceSimulation = generateForceSimulation({
+          n: groupData.length,
+          cx,
+          cy,
+          itemRadius: r,
+          boundingHeight: height,
+          boundingWidth: width,
+        });
+      }
 
       groups.exit()
         .remove();
@@ -63,7 +66,6 @@ export default function generateRepelGroups() {
             const node = forceSimulation.nodes()[i];
             return `translate(${node.x}, ${node.y})`;
           })
-
       });
 
       const processes = generateProcesses()

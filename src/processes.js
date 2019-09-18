@@ -13,7 +13,7 @@ export default function generateProcesses() {
       const group = d3.select(this);
       const numProcesses = data.processes.length;
       const processRadius = circleRadii[numProcesses] * parentRadius;
-      const circleRadius = processRadius - strokeWidth - fontSize;
+      const circleRadius = Math.max(processRadius - strokeWidth - fontSize, 1);
       const forceSimulation = generateForceSimulation({
         n: numProcesses,
         cx: 0,
@@ -49,7 +49,7 @@ export default function generateProcesses() {
       processGroups = processGroups.merge(enterProcessGroups)
       processGroups.selectAll('circle')
         .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'})
-        .attr('fill', (d) => {return d.highlight ? 'green' : 'none'});
+        .attr('fill', (d) => d.highlight || 'none');
 
       processGroups.selectAll('text')
         .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'});
