@@ -52,6 +52,7 @@ export default function generateRepelGroups() {
         .text(d => d.name)
         .attr('fill', 'grey')
         .attr('font-size', fontSize)
+        .attr('text-anchor', 'middle')
         .attr('y', -(r - fontSize));
 
       groups = groupsEnter

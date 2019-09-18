@@ -42,6 +42,7 @@ export default function generateProcesses() {
         .append('text')
         .text(d => d.name)
         .attr('fill', 'lightgrey')
+        .attr('text-anchor', 'middle')
         .attr('font-size', fontSize)
         .attr('y', -(processRadius - fontSize));
 

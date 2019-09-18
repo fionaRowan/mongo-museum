@@ -45,6 +45,7 @@ export default function generateServices() {
         .append('text')
         .text(d => d.name)
         .attr('fill', 'lightgrey')
+        .attr('text-anchor', 'middle')
         .attr('font-size', fontSize)
         .attr('y', fontSize - serviceRadius);
 
