@@ -2,10 +2,14 @@ import React, { useEffect, useState }  from 'react';
 import './App.css';
 import { Stitch, AnonymousCredential, RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
 import Display from './Display';
+import * as d3 from 'd3'
+import generateRepelGroups from './repelGroups'
 
 function App() {
   const [data, setData] = useState(0);
   const [stepNumber, setStepNumber] = useState(0);
+  const [childRef, setChildRef] = useState(null);
+  const repelGroups = generateRepelGroups();
   useEffect(() => { // initialize stitch client
     const stitchClient = Stitch.initializeDefaultAppClient('mongomuseum-mbuqp');
     console.log("logging in anonymously");
@@ -28,12 +32,15 @@ function App() {
         <p>
           Night at the Cluster Museum
         </p>
-        <Display data={data} />
+        <Display setChildRef={setChildRef} data={data} />
         <button onClick={() => {
         setStepNumber(stepNumber+1)
         const newData = swapNode(data, data.steps[stepNumber+1]);
         console.log(newData);
         setData(newData);
+        if (childRef.current) {
+          d3.select(childRef.current).data([newData]).call(repelGroups);
+        }
         }}>Next</button>
       </header>
     </div>
