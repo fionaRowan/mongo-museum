@@ -27,7 +27,6 @@ function App() {
     .toArray()
     .then(results => {
       setData(results[0]);
-
     });
   }, []);
 
@@ -70,21 +69,21 @@ function swapNode(tree, step) {
       let group = tree.groups[groupIdx];
       if (group.name === delta.name) {
         Object.assign(group, delta);
-        return tree;
+        continue;
       }
       if (group.processes) {
         for (let processIdx in group.processes) {
           let process = group.processes[processIdx];
           if (process.name === delta.name) {
             Object.assign(process, delta);
-            return tree;
+            continue;
           }
           if (process.services) {
             for (let serviceIdx in process.services) {
               let service = process.services[serviceIdx];
               if (service.name === delta.name) {
                 Object.assign(service, delta);
-                return tree;
+                continue;
               }
             }
           }
