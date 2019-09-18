@@ -5,6 +5,8 @@ import generateForceSimulation from './forceSimulation';
 export default function generateRepelGroups() {
   let height = 500;
   let width = 500;
+  let padding = 50;
+  let fontSize = 26;
   let strokeWidth = 1;
 
   function repelGroups(selection) {
@@ -13,7 +15,8 @@ export default function generateRepelGroups() {
       const groupData = data.groups;
       const cx = width / 2;
       const cy = height / 2;
-      const r = Math.min(height, width) / (Math.ceil(Math.sqrt(groupData.length)) * 2) - strokeWidth;
+      const r = Math.min(height, width) / (Math.ceil(Math.sqrt(groupData.length)) * 2);
+      const circleRadius = r - strokeWidth - fontSize;
 
       const forceSimulation = generateForceSimulation({
         n: groupData.length,
@@ -39,10 +42,17 @@ export default function generateRepelGroups() {
 
       groupsEnter
         .append('circle')
-        .attr('r', r)
+        .attr('r', circleRadius)
         .attr('fill', 'none')
         .attr('stroke-width', strokeWidth)
         .attr('stroke', 'grey');
+
+      groupsEnter
+        .append('text')
+        .text(d => d.name)
+        .attr('fill', 'grey')
+        .attr('font-size', fontSize)
+        .attr('y', -(r - fontSize));
 
       groups = groupsEnter
         .merge(groups);
@@ -57,7 +67,7 @@ export default function generateRepelGroups() {
       });
 
       const processes = generateProcesses()
-        .radius(r);
+        .radius(circleRadius);
       groups.call(processes);
     });
   }

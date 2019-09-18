@@ -4,12 +4,15 @@ import circleRadii from './circlePacking';
 
 export default function generateServices() {
   let parentRadius = 10;
+  let strokeWidth = 1;
+  let fontSize = 10;
   function services(selection) {
     selection.each(function(data) {
       const parent = d3.select(this);
       const className = `service-of-${data.name}`;
       const numServices = data.services && data.services.length;
       const serviceRadius = circleRadii[numServices] * parentRadius;
+      const circleRadius = serviceRadius - strokeWidth - fontSize;
 
       if (!numServices) {
         return;
@@ -33,16 +36,26 @@ export default function generateServices() {
         .attr('class', className);
 
       enterServiceGroups.append('circle')
-        .attr('r', serviceRadius)
+        .attr('r', circleRadius)
         .attr('stroke', 'white')
         .attr('fill', 'none')
-        .attr('stroke-width', 1);
+        .attr('stroke-width', strokeWidth);
+
+      enterServiceGroups
+        .append('text')
+        .text(d => d.name)
+        .attr('fill', 'lightgrey')
+        .attr('font-size', fontSize)
+        .attr('y', fontSize - serviceRadius);
 
       serviceGroups = serviceGroups.merge(enterServiceGroups);
 
       serviceGroups.selectAll('circle')
-        .attr('fill', (d) => {return d.highlight ? "yellow" : "none"})
         .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'})
+        .attr('fill', (d) => {return d.highlight ? "yellow" : "none"});
+
+      serviceGroups.selectAll('text')
+        .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'});
 
       forceSimulation.on('tick', () => {
         serviceGroups
@@ -54,7 +67,7 @@ export default function generateServices() {
 
 
       const childService = generateServices()
-        .radius(serviceRadius);
+        .radius(circleRadius);
       serviceGroups.call(childService);
     });
   }

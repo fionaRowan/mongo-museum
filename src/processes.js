@@ -5,6 +5,7 @@ import generateForceSimulation from './forceSimulation';
 
 export default function generateProcesses() {
   let parentRadius = 50;
+  let fontSize = 18;
   let strokeWidth = 1;
 
   function processes(selection) {
@@ -12,6 +13,7 @@ export default function generateProcesses() {
       const group = d3.select(this);
       const numProcesses = data.processes.length;
       const processRadius = circleRadii[numProcesses] * parentRadius;
+      const circleRadius = processRadius - strokeWidth - fontSize;
       const forceSimulation = generateForceSimulation({
         n: numProcesses,
         cx: 0,
@@ -30,16 +32,26 @@ export default function generateProcesses() {
         .attr('class', 'process');
 
       enterProcessGroups.append('circle')
-        .attr('r', processRadius - strokeWidth)
+        .attr('r', circleRadius)
         .attr('stroke', 'lightgrey')
         .attr('cx', 0)
         .attr('cy', 0)
         .attr('stroke-width', strokeWidth);
 
+      enterProcessGroups
+        .append('text')
+        .text(d => d.name)
+        .attr('fill', 'lightgrey')
+        .attr('font-size', fontSize)
+        .attr('y', -(processRadius - fontSize));
+
       processGroups = processGroups.merge(enterProcessGroups)
       processGroups.selectAll('circle')
         .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'})
         .attr('fill', (d) => {return d.highlight ? 'green' : 'none'});
+
+      processGroups.selectAll('text')
+        .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'});
 
       forceSimulation.on('tick', () => {
         processGroups
@@ -50,7 +62,7 @@ export default function generateProcesses() {
       });
 
       const services = generateServices()
-        .radius(processRadius);
+        .radius(circleRadius);
       processGroups.call(services);
     });
 
