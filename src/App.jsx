@@ -1,6 +1,7 @@
 import React, { useEffect, useState }  from 'react';
 import './App.css';
 import { Stitch, AnonymousCredential, RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
+import Button from '@leafygreen-ui/button'
 import Display from './Display';
 import * as d3 from 'd3'
 import generateRepelGroups from './repelGroups'
@@ -42,7 +43,7 @@ function App() {
           Night at the Cluster Museum
         </p>
         <Display setChildRef={setChildRef} data={data} />
-        <button onClick={() => {
+        <Button onClick={() => {
           if (!data || stepNumber >= data.steps.length - 1) {
             return;
           }
@@ -53,7 +54,7 @@ function App() {
           if (childRef.current) {
             d3.select(childRef.current).data([newData]).call(repelGroups);
           }
-        }} disabled={data && stepNumber === data.steps.length - 1}>Next</button>
+        }} disabled={data && stepNumber === data.steps.length - 1}>Next</Button>
         <p>{data && stepNumber >= 0 ? data.steps[stepNumber].description : 'Click Next to Start Story'}</p>
       </header>
     </div>

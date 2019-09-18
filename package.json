@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@leafygreen-ui/button": "^2.3.7",
     "d3": "^5.12.0",
     "install": "^0.13.0",
     "mongodb-stitch-browser-sdk": "^4.5.0",
