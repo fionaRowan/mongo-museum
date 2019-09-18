@@ -6,6 +6,7 @@ import Display from './Display';
 import MongoMuseum from './reducers/reducers';
 
 function App() {
+  const [stepNumber, setStepNumber] = useState(0);
   const [store, setStore] = useState(0);
   useEffect(() => { // initialize stitch client
     const stitchClient = Stitch.initializeDefaultAppClient('mongomuseum-mbuqp');
@@ -29,7 +30,8 @@ function App() {
         <p>
           Night at the Cluster Museum
         </p>
-        <Display store={store}/>
+        <Display store={store} stepNumber={stepNumber}/>
+        <button onClick={() => setStepNumber(stepNumber + 1)}>Next</button>
       </header>
     </div>
   );

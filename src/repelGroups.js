@@ -41,6 +41,7 @@ export default function generateRepelGroups() {
 
         groups
           .attr('transform', (d, i) => `translate(${d.x}, ${d.y})`)
+
         const processes = generateProcesses()
         groups.call(processes);
       });

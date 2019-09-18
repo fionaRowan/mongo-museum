@@ -15,12 +15,13 @@ export default function generateProcesses() {
         .append('g')
         .attr('class', 'process');
 
+
       enterProcessGroups.append('circle')
         .attr('r', 50)
         .attr('stroke', 'white')
         .attr('cx', 50)
         .attr('cy', 50)
-        .attr('fill', 'none')
+        .attr('fill', (d) => {return d.highlight ? 'green' : 'none'})
         .attr('stroke-width', 1);
 
       processGroups = processGroups.merge(enterProcessGroups);
