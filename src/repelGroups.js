@@ -69,6 +69,12 @@ export default function generateRepelGroups() {
       groups = groupsEnter
         .merge(groups);
 
+      groups.selectAll('circle')
+        .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'})
+        .attr('fill', (d) => (d.highlight && d.highlight !== "None") ? d.highlight : "transparent");
+
+      groups.selectAll('text')
+        .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'});
 
       processes.radius(circleRadius);
       groups.call(processes);
