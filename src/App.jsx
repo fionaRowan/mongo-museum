@@ -40,28 +40,36 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          Night at the Cluster Museum
-        </p>
-        <Display setChildRef={setChildRef} data={data} />
-        <Button onClick={() => {
-          if (!data || stepNumber >= data.steps.length - 1) {
-            return;
-          }
-          setStepNumber(stepNumber+1)
-          const newData = swapNode(data, data.steps[stepNumber+1]);
-          console.log(newData);
-          setData(newData);
-          if (childRef.current) {
-            d3.select(childRef.current).data([newData]).call(repelGroups);
-          }
-        }} disabled={data && stepNumber === data.steps.length - 1}>Next</Button>
-        <p>{data && stepNumber >= 0 ? data.steps[stepNumber].description : 'Click Next to Start Story'}</p>
+        <div style={{height:"100%", width:"100%"}}>
+            <div style={{display:"inline-block", width:"60%"}}>
+                <p>{data ? data._id : ""}</p>
+                <div>
+                    <Display setChildRef={setChildRef} data={data} />
+                </div>
+            </div>
+
+            <div style={{display:"inline-block", width:"20%", padding:10, top:"50%"}}>
+                <p>{data && stepNumber >= 0 ? (data.steps[stepNumber].description) : ''}</p>
+
+                <Button onClick={() => {
+                  if (!data || stepNumber >= data.steps.length - 1) {
+                    return;
+                  }
+                  setStepNumber(stepNumber+1)
+                  const newData = swapNode(data, data.steps[stepNumber+1]);
+                  console.log(newData);
+                  setData(newData);
+                  if (childRef.current) {
+                    d3.select(childRef.current).data([newData]).call(repelGroups);
+                  }
+                }} disabled={data && stepNumber === data.steps.length - 1}>Next</Button>
+            </div>
+        </div>
+
       </header>
     </div>
   );
 }
-
 
 function swapNode(tree, step) {
   for (let deltaIdx in step.deltas) {
