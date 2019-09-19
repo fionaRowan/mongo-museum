@@ -78,6 +78,9 @@ function swapNode(tree, step) {
       let group = tree.groups[groupIdx];
       if (group.name === delta.name) {
         Object.assign(group, delta);
+
+        // Skip iterating the rest of the elements because we already found the
+        // element with the name for this delta.
         continue;
       }
       if (group.processes) {
@@ -85,22 +88,32 @@ function swapNode(tree, step) {
           let process = group.processes[processIdx];
           if (process.name === delta.name) {
             Object.assign(process, delta);
+
+            // Skip iterating the rest of the elements because we already found
+            // the element with the name for this delta.
             continue;
           }
-          if (process.services) {
-            for (let serviceIdx in process.services) {
-              let service = process.services[serviceIdx];
-              if (service.name === delta.name) {
-                Object.assign(service, delta);
-                continue;
-              }
-            }
-          }
+          swapNodeRecursiveForServices(process.services, delta);
         }
       }
     }
   }
   return tree;
 }
+
+function swapNodeRecursiveForServices(services, delta) {
+  console.log("in recursive call");
+  console.log(services);
+  if (services) {
+    for (let serviceIdx in services) {
+      let service = services[serviceIdx];
+      if (service.name === delta.name) {
+        Object.assign(service, delta);
+      }
+      swapNodeRecursiveForServices(service.services, delta);
+    }
+  }
+}
+
 
 export default App;
