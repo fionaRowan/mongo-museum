@@ -7,8 +7,8 @@ export default function generateRepelGroups() {
   let width = 800;
   let fontSize = 26;
   let strokeWidth = 1;
-  let forceSimulation;
-  const processes = generateProcesses();
+  let forceSimulations = {};
+  const processes = {};
 
   function repelGroups(selection) {
     selection.each(function(data) {
@@ -29,8 +29,12 @@ export default function generateRepelGroups() {
       let groups = svg.selectAll('g.repel-group')
         .data(groupData, d => d.name);
 
-      if (!forceSimulation || groups.enter().size() > 0 || groups.exit().size() > 0) {
-        forceSimulation = generateForceSimulation({
+      if (!processes[data.name]) {
+        processes[data.name] = generateProcesses();
+      }
+
+      if (!forceSimulations[data.name] || groups.enter().size() > 0 || groups.exit().size() > 0) {
+        forceSimulations[data.name] = generateForceSimulation({
           n: groupData.length,
           cx,
           cy,
@@ -39,10 +43,10 @@ export default function generateRepelGroups() {
           boundingWidth: width,
         });
 
-        forceSimulation.on('tick', () => {
+        forceSimulations[data.name].on('tick', () => {
           groups
             .attr('transform', (d, i) => {
-              const node = forceSimulation.nodes()[i];
+              const node = forceSimulations[data.name].nodes()[i];
               return `translate(${node.x}, ${node.y})`;
             })
         });
@@ -80,8 +84,8 @@ export default function generateRepelGroups() {
       groups.selectAll('text')
         .attr('visibility', (d) => {return d.show ? 'visible' : 'hidden'});
 
-      processes.radius(circleRadius);
-      groups.call(processes);
+      processes[data.name].radius(circleRadius);
+      groups.call(processes[data.name]);
     });
   }
 
