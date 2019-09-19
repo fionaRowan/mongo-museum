@@ -57,6 +57,7 @@ export default function generateServices() {
         .on('mouseout', () => { d3.select(this).style("cursor", "default"); })
         .on('click', (d) => {
           window.open(d.github, "_blank");
+          d3.event.stopPropagation();
         });
 
       enterServiceGroups.append('circle')
