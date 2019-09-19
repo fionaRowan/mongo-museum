@@ -42,14 +42,14 @@ function App() {
       <header className="App-header">
         <div style={{height:"100%", width:"100%"}}>
             <div style={{display:"inline-block", width:"60%"}}>
-                <p>{data ? data._id : ""}</p>
+                <p>{data && stepNumber >= 0 ? data._id : ""}</p>
                 <div>
                     <Display setChildRef={setChildRef} data={data} />
                 </div>
             </div>
 
-            <div style={{display:"inline-block", width:"20%", padding:10, top:"50%"}}>
-                <p>{data && stepNumber >= 0 ? (data.steps[stepNumber].description) : ''}</p>
+            <div style={{display:"inline-block", width:"20%", padding:10}}>
+                <div style={{"white-space":"pre-wrap"}}>{data && stepNumber >= 0 ? (data.steps[stepNumber].description + "\n\n\n\n\n\n\n\n\n\n") : getStoryList()}</div>
 
                 <Button onClick={() => {
                   if (!data || stepNumber >= data.steps.length - 1) {
@@ -69,6 +69,10 @@ function App() {
       </header>
     </div>
   );
+}
+
+function getStoryList() {
+    return "Choose a story:\n\nLife of an Insert\n\nAdding a Shard\n\nRemoving a Shard\n\nManual Migration\n\nMigration through Auto-Balancing\n\nDropping a Collection\n\n\n\n";
 }
 
 function swapNode(tree, step) {
