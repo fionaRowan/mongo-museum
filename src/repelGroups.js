@@ -20,7 +20,11 @@ export default function generateRepelGroups() {
       const circleRadius = Math.max(r - strokeWidth - fontSize, 1);
 
       svg.attr('height', height)
-        .attr('width', width);
+        .attr('width', width)
+        .call(d3.zoom().on("zoom", function () {
+           svg.attr("transform", d3.event.transform)
+        }))
+        .append("g")
 
       let groups = svg.selectAll('g.repel-group')
         .data(groupData, d => d.name);
