@@ -23,7 +23,8 @@ function App() {
     const mongoClient = stitchClient.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas');
     const db = mongoClient.db('sharding');
     const coll = db.collection('stories');
-    coll.find({}, {limit: 10})
+    //coll.find({_id: "Full-text search replication"}, {limit: 10})
+    coll.find({_id: "Life of an Insert"}, {limit: 10})
     .toArray()
     .then(results => {
       setData(results[0]);
