@@ -106,8 +106,6 @@ function swapNode(tree, step) {
 }
 
 function swapNodeRecursiveForServices(services, delta) {
-  console.log("in recursive call");
-  console.log(services);
   if (services) {
     for (let serviceIdx in services) {
       let service = services[serviceIdx];
