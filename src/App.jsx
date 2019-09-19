@@ -28,11 +28,6 @@ function App() {
     const db = mongoClient.db('sharding');
     const coll = db.collection('stories');
     //coll.find({_id: "Full-text search replication"}, {limit: 10})
-    coll.find({_id: "default"}, {limit: 10})
-    .toArray()
-    .then(results => {
-      setData(results[0]);
-    });
   }, []);
 
   let advance = () => {
